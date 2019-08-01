@@ -1,5 +1,10 @@
 .INCLUDE "nk.s"
 
+.SEGMENT    "ZEROPAGE"
+
+COUNTER:
+    .RES 1
+
 .SEGMENT    "CODE"
 
 RESET:
@@ -11,10 +16,15 @@ RESET:
     STX $4008
     STX $400A
     STX $400B
+    LDX #0
+    STX COUNTER
     RTS
 
 UPDATE:
     RTS
 
 VBLANK:
+    DEC COUNTER
+    LDA COUNTER
+    STA $400A
     RTS
