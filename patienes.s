@@ -1,3 +1,4 @@
+.INCLUDE "modules/nk_joypad.s"
 .INCLUDE "nk.s"
 
 .SEGMENT    "ZEROPAGE"
@@ -14,17 +15,26 @@ RESET:
     STX $4015
     LDX #%10000001
     STX $4008
-    STX $400A
     STX $400B
-    LDX #0
+    LDX #$FF
     STX COUNTER
+    STX $400A
     RTS
 
 UPDATE:
+    NK_JOYPAD_READ 0
+    LDA v_nk_joypad_pressed
+    BEQ @exit
+    LDX #$FF
+    STX COUNTER
+@exit:
     RTS
 
 VBLANK:
-    DEC COUNTER
-    LDA COUNTER
-    STA $400A
+    LDX COUNTER
+    BEQ @exit
+    DEX
+    STX COUNTER
+    STX $400A
+@exit:
     RTS
