@@ -1,0 +1,1 @@
+python neskit/nkasm -v -I neskit/nk -b 1 -o patienes.nes -d -l patienes.lst patienes.s
